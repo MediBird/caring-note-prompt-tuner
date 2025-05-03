@@ -13,3 +13,7 @@ wheels/
 .idea/
 
 .env
+
+.DS_Store
+
+**/.ipynb_checkpoints/
