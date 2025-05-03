@@ -11,3 +11,5 @@ wheels/
 
 # JetBrains IDE
 .idea/
+
+.env
