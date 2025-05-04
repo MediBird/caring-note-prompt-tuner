@@ -22,13 +22,14 @@ class MedicationCounsel(SQLModel, table=True):
     counsel_session: Optional["CounselSession"] = Relationship(back_populates="medication_counsel")
 
     def get_full_counsel_record(self) -> str:
-        if self.counsel_record[0]:
-            children: List[dict] = self.counsel_record[0].get('children', [])
-            joined = '\n'.join(
-                f"**{d['text']}**" if d.get('bold') is True else d['text']
-                for d in children if 'text' in d
-            )
-            return joined
+        if self.counsel_record:
+            all_lines: List[str] = []
+            for data in self.counsel_record:
+                children: List[dict] = data.get('children', [])
+                for d in children:
+                    text = f"**{d['text']}**" if d.get('bold') is True else d['text']
+                    all_lines.append(text)
+            return '\n'.join(all_lines)
         else:
             return ''
 
