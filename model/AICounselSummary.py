@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field, Relationship, Column
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 from enum import Enum
 from model.CounselSession import CounselSession
 from model.decorator.JSONText import JSONText
@@ -36,3 +36,23 @@ class AICounselSummary(SQLModel, table=True):
             return self.ta_result['result']['output']['text']
 
         return ''
+
+    def get_stt_result(self) -> List[dict]:
+
+        stt_results = List[dict]
+
+        if self.stt_result:
+            speakers = self.__get_speakers()
+            stt_results = [
+                {
+                    'speaker': segment['speaker']['name'],
+                    'text': segment['text']
+                }
+                for segment in self.stt_result['segments']
+                if segment['speaker']['name'] in speakers
+            ]
+
+        return stt_results
+
+    def __get_speakers(self) -> List[str]:
+        return self.speakers.split("^=^")
