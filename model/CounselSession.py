@@ -6,6 +6,8 @@ from enum import Enum
 if TYPE_CHECKING:
     from model.AICounselSummary import AICounselSummary
     from model.MedicationCounsel import MedicationCounsel
+    from model.CounselCard import CounselCard
+
 
 class ScheduleStatus(str, Enum):
     SCHEDULED = "SCHEDULED"
@@ -33,3 +35,4 @@ class CounselSession(SQLModel, table=True):
 
     ai_counsel_summary: Optional["AICounselSummary"] = Relationship(back_populates="counsel_session")
     medication_counsel: Optional["MedicationCounsel"] = Relationship(back_populates="counsel_session")
+    counsel_card: Optional["CounselCard"] = Relationship(back_populates=None)
